@@ -2,9 +2,9 @@ import pandas as pd
 from pathlib import Path
 
 
-# ==========================================
+
 # PROJECT PATHS
-# ==========================================
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -14,9 +14,9 @@ PROCESSED_DIR = BASE_DIR / "data" / "processed"
 PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
 
 
-# ==========================================
+
 # LOAD DATASETS
-# ==========================================
+
 
 def load_datasets():
     movies = pd.read_csv(RAW_DIR / "movies.csv")
@@ -29,9 +29,9 @@ def load_datasets():
     return movies, ratings, tags, links
 
 
-# ==========================================
+
 # CLEAN MOVIES
-# ==========================================
+
 
 def clean_movies(movies):
     movies = movies.copy()
@@ -57,9 +57,9 @@ def clean_movies(movies):
     return movies
 
 
-# ==========================================
+
 # CLEAN RATINGS
-# ==========================================
+
 
 def clean_ratings(ratings, movies):
     ratings = ratings.copy()
@@ -96,9 +96,7 @@ def clean_ratings(ratings, movies):
     return ratings
 
 
-# ==========================================
 # CLEAN TAGS
-# ==========================================
 
 def clean_tags(tags, movies):
     tags = tags.copy()
@@ -123,9 +121,9 @@ def clean_tags(tags, movies):
     return tags
 
 
-# ==========================================
+
 # CLEAN LINKS
-# ==========================================
+
 
 def clean_links(links, movies):
     links = links.copy()
@@ -151,9 +149,9 @@ def clean_links(links, movies):
     return links
 
 
-# ==========================================
+
 # CREATE CONTENT FEATURES
-# ==========================================
+
 
 def create_movie_features(movies):
     movie_features = movies.copy()
@@ -173,9 +171,9 @@ def create_movie_features(movies):
     return movie_features
 
 
-# ==========================================
+
 # SAVE PROCESSED DATASETS
-# ==========================================
+
 
 def save_datasets(
     movies,
@@ -212,9 +210,7 @@ def save_datasets(
     print("Processed datasets saved successfully.")
 
 
-# ==========================================
 # MAIN EXECUTION
-# ==========================================
 
 def main():
     movies, ratings, tags, links = load_datasets()
