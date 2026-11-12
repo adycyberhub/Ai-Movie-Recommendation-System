@@ -41,7 +41,7 @@ def test_unique_partial_title(sample_movies):
 
 
 def test_ambiguous_partial_title(sample_movies):
-    with pytest.raises(ValueError, match="more than one movie"):
+    with pytest.raises(ValueError, match="(?i)more than one movie"):
         MovieRecommender(sample_movies).recommend("Toy Story")
 
 
