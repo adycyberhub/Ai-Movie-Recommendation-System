@@ -1,55 +1,35 @@
-"""Command-line entry point for the AI Movie Recommendation System."""
-from pathlib import Path
-import sys
-
-from src.recommender import MovieRecommender, DEFAULT_DATA_PATH
-
+# src/main.py
+from recommender import get_recommendations
 
 def main():
-    print("=" * 55)
-    print("           AI MOVIE RECOMMENDATION SYSTEM")
-    print("=" * 55)
-
-    if not DEFAULT_DATA_PATH.exists():
-        print("\nProcessed movie data was not found.")
-        print("Run the preprocessing step first:")
-        print("  python src/data_preprocessing.py")
-        return 1
-
-    try:
-        recommender = MovieRecommender.from_csv()
-    except (FileNotFoundError, ValueError) as error:
-        print(f"Could not load the recommendation model: {error}")
-        return 1
-
-    print("\nFind movies similar to a movie you enjoy.")
-    print("Tip: You can enter a full title or part of a title.")
-    print("Type 'q' or 'quit' to exit.")
-
+    print("=" * 40)
+    print("   AI MOVIE RECOMMENDATION SYSTEM   ")
+    print("=" * 40)
+    
     while True:
-        try:
-            movie_title = input("\nEnter a movie title: ").strip()
-        except (EOFError, KeyboardInterrupt):
-            print("\nGoodbye!")
-            return 0
-
-        if movie_title.casefold() in {"q", "quit", "exit"}:
-            print("Thanks for using the AI Movie Recommendation System!")
-            return 0
-
+        movie_title = input("\nEnter a movie name (type 'exit' to quit): ").strip()
+        
+        if movie_title.lower() == 'exit':
+            print("Exiting program. Goodbye!")
+            break
+            
         if not movie_title:
-            print("Please enter a movie title. Empty input is not accepted.")
+            print("[Error] Movie title cannot be empty. Please try again.")
             continue
-
+            
         try:
-            recommendations = recommender.recommend(movie_title, top_n=5)
-            print("\nTop 5 similar movies:")
-            for number, row in enumerate(recommendations.itertuples(index=False), start=1):
-                print(f"{number}. {row.title} (similarity: {row.similarity_score:.3f})")
-        except ValueError as error:
-            print(error)
-            print("Try another title or a more specific search.")
-
+            recommendations = get_recommendations(movie_title)
+            if recommendations:
+                print(f"\nTop 5 similar movies to '{movie_title}':")
+                for i, rec in enumerate(recommendations, 1):
+                    print(f"{i}. {rec}")
+            else:
+                print(f"[Notice] No recommendations found for '{movie_title}'.")
+                
+        except ValueError as e:
+            print(f"[Error] {e}")
+        except Exception as e:
+            print(f"[Error] An unexpected error occurred: {e}")
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()
